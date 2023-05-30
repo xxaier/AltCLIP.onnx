@@ -9,7 +9,7 @@ loader = AutoLoader(
     task_name="txt_img_matching",
     model_name=
     "AltCLIP-XLMR-L-m18",  # Load the checkpoints from Modelhub(model.baai.ac.cn/models)
-    model_dir="./checkpoints")
+    model_dir="./model")
 
 model = loader.get_model()
 tokenizer = loader.get_tokenizer()
