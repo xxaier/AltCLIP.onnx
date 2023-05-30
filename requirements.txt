@@ -1,3 +1,5 @@
+#bmtrain
+Pillow
 baai_modelhub
 torch
 flagai
