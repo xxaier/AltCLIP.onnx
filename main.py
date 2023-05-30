@@ -17,9 +17,9 @@ device = torch.device(DEVICE)
 
 # loader = AutoLoader(
 #     task_name="txt_img_matching",
-#     model_name=
-#     "AltCLIP-XLMR-L-m18",  # Load the checkpoints from Modelhub(model.baai.ac.cn/models)
-#     model_dir="./model")
+#     model_name="AltCLIP-XLMR-L-m18",
+#     model_dir="./model"
+# )
 #
 # model = loader.get_model()
 # tokenizer = loader.get_tokenizer()
