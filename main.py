@@ -15,11 +15,11 @@ else:
 
 device = torch.device(DEVICE)
 
+print(DEVICE, MODEL)
+
 loader = AutoLoader(task_name="txt_img_matching",
                     model_name="AltCLIP-XLMR-L-m18",
                     model_dir=MODEL)
-
-print(DEVICE, MODEL)
 
 model = loader.get_model()
 tokenizer = loader.get_tokenizer()
@@ -32,7 +32,7 @@ tokenizer = loader.get_tokenizer()
 
 
 def inference():
-  image = Image.open(join(ROOT, "dog.jpeg"))
+  image = Image.open(join(ROOT, "cat.jpg"))
   image = transform(image)
   image = torch.tensor(image["pixel_values"]).to(device)
   tokenizer_out = tokenizer(["a rat", "a dog", "a cat"],
