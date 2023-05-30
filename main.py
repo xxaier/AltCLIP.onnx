@@ -13,13 +13,13 @@ elif torch.backends.mps.is_available():
 else:
   DEVICE = 'cpu'
 
-print(DEVICE)
-
 device = torch.device(DEVICE)
 
 loader = AutoLoader(task_name="txt_img_matching",
                     model_name="AltCLIP-XLMR-L-m18",
                     model_dir=MODEL)
+
+print(DEVICE, MODEL)
 
 model = loader.get_model()
 tokenizer = loader.get_tokenizer()
