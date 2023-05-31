@@ -35,7 +35,7 @@ def inference(tmpl, kind_li):
   image = Image.open(join(ROOT, "cat.jpg"))
   image = transform(image)
   image = torch.tensor(image["pixel_values"]).to(device)
-  tokenizer_out = tokenizer([tmpl%i for i in kind_li],
+  tokenizer_out = tokenizer([tmpl % i for i in kind_li],
                             padding=True,
                             truncation=True,
                             max_length=77,
@@ -49,10 +49,10 @@ def inference(tmpl, kind_li):
                                             attention_mask=attention_mask)
     text_probs = (image_features @ text_features.T).softmax(dim=-1)
 
-  for kind, p in zip(kind_li,text_probs.cpu().numpy()[0].tolist()):
-    print(kind,"%.2f%%"%(p*100))
+  for kind, p in zip(kind_li, text_probs.cpu().numpy()[0].tolist()):
+    print(kind, "%.2f%%" % (p * 100))
 
 
 if __name__ == "__main__":
-  inference('a photo of %s',['cat','rat','dog'])
-  inference('一张%s的图片',['猫','老鼠','狗'])
+  inference('a photo of %s', ['cat', 'rat', 'dog'])
+  inference('一张%s的图片', ['猫', '老鼠', '狗'])
