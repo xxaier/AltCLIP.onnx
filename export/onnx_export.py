@@ -24,6 +24,7 @@ def onnx_export(outdir, model, args, **kwds):
                     args,
                     fp,
                     export_params=True,
+                    verbose=True,
                     opset_version=opset_version,
                     do_constant_folding=False,
                     input_names=['input'],
