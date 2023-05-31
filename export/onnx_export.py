@@ -5,7 +5,7 @@ from os import makedirs
 from os.path import join
 import torch
 from config import ONNX_FP, ROOT, opset_version
-from clip_model import IMG, TXT
+from clip_model import TXT, IMG
 from PIL import Image
 from proc import transform
 
@@ -35,6 +35,10 @@ def onnx_export(outdir, model, args, **kwds):
 
 # 参考 https://github.com/OFA-Sys/Chinese-CLIP/blob/master/cn_clip/deploy/pytorch_to_onnx.py
 
-onnx_export('img', IMG, image, dynamic_axes={'input': {0: 'batch'}})
+onnx_export(
+    'txt',
+    TXT,
+    ['a photo of cat', 'a image of cat'],
+)
 
-onnx_export('txt', TXT, ['a photo of cat', 'a image of cat'])
+onnx_export('img', IMG, image, dynamic_axes={'input': {0: 'batch'}})

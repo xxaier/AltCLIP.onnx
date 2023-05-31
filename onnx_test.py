@@ -3,7 +3,6 @@
 import onnxruntime
 from os.path import join, dirname, abspath
 from export.config import MODEL_NAME
-import numpy as np
 
 ROOT = dirname(abspath(__file__))
 session = onnxruntime.SessionOptions()
@@ -23,7 +22,8 @@ output_name = sess.get_outputs()[0].name
 
 print(input_name)
 print(output_name)
-output = sess.run([output_name], ["a photo of dog", 'a photo of cat'])
-prob = np.squeeze(output[0])
+output = sess.run([output_name],
+                  {"input": ["a photo of dog", 'a photo of cat']})
+# prob = np.squeeze(output[0])
 
-print(">", prob)
+print(">", output)
