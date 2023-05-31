@@ -1,34 +1,14 @@
 #!/usr/bin/env python
 
 import torch
+from m18 import DEVICE
 from PIL import Image
-from config import MODEL, ROOT
+from config import ROOT
 from os.path import basename, join
-from flagai.auto_model.auto_loader import AutoLoader
 from time import time
 from proc import tokenizer, transform
 from glob import glob
-
-if torch.cuda.is_available():
-  DEVICE = 'cuda'
-elif torch.backends.mps.is_available():
-  DEVICE = 'mps'
-else:
-  DEVICE = 'cpu'
-
-device = torch.device(DEVICE)
-
-print(DEVICE, MODEL)
-
-loader = AutoLoader(task_name="txt_img_matching",
-                    model_name="AltCLIP-XLMR-L-m18",
-                    model_dir=MODEL)
-
-MODEL = loader.get_model()
-
-MODEL.eval()
-MODEL.to(device)
-MODEL = torch.compile(MODEL)
+from m18 import MODEL
 
 COST = None
 
@@ -40,11 +20,11 @@ def inference(jpg, tmpl, kind_li):
                             max_length=77,
                             return_tensors='pt')
 
-  text = tokenizer_out["input_ids"].to(device)
-  attention_mask = tokenizer_out["attention_mask"].to(device)
+  text = tokenizer_out["input_ids"].to(DEVICE)
+  attention_mask = tokenizer_out["attention_mask"].to(DEVICE)
   image = Image.open(jpg)
   image = transform(image)
-  image = torch.tensor(image["pixel_values"]).to(device)
+  image = torch.tensor(image["pixel_values"]).to(DEVICE)
   begin = time()
 
   with torch.no_grad():
