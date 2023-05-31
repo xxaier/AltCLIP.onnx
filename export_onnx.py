@@ -21,7 +21,7 @@ def onnx_export(outdir, model, args, **kwds):
   name = f'{MODEL_NAME}.{outdir}.onnx'
   fp = join(onnx_txt, name)
   torch.onnx.export(model, args, fp, **kwds)
-  rename(fp, join(ONNX_DIR, name))
+  # rename(fp, join(ONNX_DIR, name))
 
 
 onnx_export(
