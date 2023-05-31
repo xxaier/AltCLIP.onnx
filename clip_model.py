@@ -2,13 +2,13 @@
 
 import torch
 import torch.nn as nn
-from config import DIR_MODEL, NAME_MODEL
+from config import MODEL_DIR, MODEL_NAME, DEVICE
 from flagai.auto_model.auto_loader import AutoLoader
 from proc import tokenizer
 
 loader = AutoLoader(task_name="txt_img_matching",
-                    model_name=NAME_MODEL,
-                    model_dir=DIR_MODEL)
+                    model_name=MODEL_NAME,
+                    model_dir=MODEL_DIR)
 
 MODEL = loader.get_model()
 

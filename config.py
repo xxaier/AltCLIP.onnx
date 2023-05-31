@@ -4,9 +4,9 @@ import torch
 from os.path import abspath, dirname, join
 
 ROOT = dirname(abspath(__file__))
-DIR_MODEL = join(ROOT, 'model')
-NAME_MODEL = 'AltCLIP-XLMR-L-m18'
-FP_MODEL = join(DIR_MODEL, NAME_MODEL)
+MODEL_DIR = join(ROOT, 'model')
+MODEL_NAME = 'AltCLIP-XLMR-L-m18'
+MODEL_FP = join(MODEL_DIR, MODEL_NAME)
 
 if torch.cuda.is_available():
   device = 'cuda'
