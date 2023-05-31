@@ -13,8 +13,6 @@ COST = None
 
 
 def inference(jpg, tmpl, kind_li):
-  # text = tokenizer_out["input_ids"].to(DEVICE)
-  # attention_mask = tokenizer_out["attention_mask"].to(DEVICE)
   image = Image.open(jpg)
   image = transform(image)
   image = torch.tensor(image["pixel_values"]).to(DEVICE)

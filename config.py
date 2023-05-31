@@ -7,6 +7,7 @@ ROOT = dirname(abspath(__file__))
 MODEL_DIR = join(ROOT, 'model')
 MODEL_NAME = 'AltCLIP-XLMR-L-m18'
 MODEL_FP = join(MODEL_DIR, MODEL_NAME)
+ONNX_DIR = join(ROOT, 'onnx')
 
 if torch.cuda.is_available():
   device = 'cuda'
@@ -16,3 +17,5 @@ else:
   device = 'cpu'
 
 DEVICE = torch.device(device)
+
+opset_version = 14
