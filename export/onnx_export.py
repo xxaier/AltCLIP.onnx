@@ -20,16 +20,17 @@ def onnx_export(outdir, model, args, **kwds):
   makedirs(ONNX_FP, exist_ok=True)
   name = f'{outdir}.onnx'
   fp = join(ONNX_FP, name)
-  torch.onnx.export(model,
-                    args,
-                    fp,
-                    export_params=True,
-                    verbose=True,
-                    opset_version=opset_version,
-                    do_constant_folding=False,
-                    input_names=['input'],
-                    output_names=['output'],
-                    **kwds)
+  torch.onnx.export(
+      model,
+      args,
+      fp,
+      export_params=True,
+      # verbose=True,
+      opset_version=opset_version,
+      do_constant_folding=False,
+      input_names=['input'],
+      output_names=['output'],
+      **kwds)
   print(name, "DONE\n")
   # rename(fp, join(ONNX_DIR, name))
 
