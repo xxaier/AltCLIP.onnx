@@ -2,4 +2,4 @@ Pillow
 #bmtrain
 #baai_modelhub
 torch
-flagai
+#flagai
