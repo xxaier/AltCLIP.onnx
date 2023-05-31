@@ -6,6 +6,7 @@ from config import MODEL, ROOT
 from os.path import basename, join
 from flagai.auto_model.auto_loader import AutoLoader
 from time import time
+from proc import tokenizer, transform
 from glob import glob
 
 if torch.cuda.is_available():
@@ -28,9 +29,6 @@ model = loader.get_model()
 model.eval()
 model.to(device)
 model = torch.compile(model)
-
-tokenizer = loader.get_tokenizer()
-transform = loader.get_transform()
 
 COST = None
 
