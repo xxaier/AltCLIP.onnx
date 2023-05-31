@@ -10,6 +10,10 @@ direnv exec . pip install --pre torch --index-url https://download.pytorch.org/w
 
 direnv exec . pip install -r requirements.txt
 
+if [[ $(uname) != *"Darwin"* ]]; then
+  direnv exec . pip install onnxruntime-silicon
+fi
+
 if [ ! -d "FlagAI" ]; then
   git clone --depth=1 git@github.com:FlagAI-Open/FlagAI.git
 fi
