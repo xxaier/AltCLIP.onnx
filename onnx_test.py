@@ -10,11 +10,11 @@ option = onnxruntime.RunOptions()
 option.log_severity_level = 2
 
 kind = 'txt'
-fp = join(ROOT, f'onnx/{MODEL_NAME}.{kind}.onnx')
+fp = join(ROOT, f'onnx/{MODEL_NAME}/{kind}.onnx')
 
 img_session = onnxruntime.InferenceSession(
     fp,
     sess_options=session,
-)
+    providers=['CoreMLExecutionProvider', 'CPUExecutionProvider'])
 
 print(fp)

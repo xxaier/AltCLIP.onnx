@@ -4,7 +4,7 @@ from device import DEVICE
 from os import makedirs
 from os.path import join
 import torch
-from config import ONNX_FP, MODEL_NAME, ROOT, opset_version
+from config import ONNX_FP, ROOT, opset_version
 from clip_model import IMG, TXT
 from PIL import Image
 from proc import transform
@@ -18,7 +18,7 @@ image = torch.tensor(image["pixel_values"]).to(DEVICE)
 
 def onnx_export(outdir, model, args, **kwds):
   makedirs(ONNX_FP, exist_ok=True)
-  name = f'{MODEL_NAME}.{outdir}.onnx'
+  name = f'{outdir}.onnx'
   fp = join(ONNX_FP, name)
   torch.onnx.export(model,
                     args,
