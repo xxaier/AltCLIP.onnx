@@ -19,4 +19,4 @@ else:
 
 DEVICE = torch.device(device)
 
-opset_version = 14
+opset_version = 18
