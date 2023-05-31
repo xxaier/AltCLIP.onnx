@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import onnxruntime
-from config import MODEL_NAME
 from os.path import join,dirname,abspath
 from export.config import MODEL_NAME
 
