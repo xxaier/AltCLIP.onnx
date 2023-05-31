@@ -15,26 +15,24 @@ image = transform(image)
 image = torch.tensor(image["pixel_values"]).to(DEVICE)
 
 
-def onnx_export(outdir, model, args):
+def onnx_export(outdir, model, args, **kwds):
   makedirs(ONNX_FP, exist_ok=True)
   name = f'{MODEL_NAME}.{outdir}.onnx'
   fp = join(ONNX_FP, name)
-  torch.onnx.export(
-      model,
-      args,
-      fp,
-      export_params=True,
-      opset_version=opset_version,
-      do_constant_folding=False,
-      input_names=['input'],
-      output_names=['output'],
-      # dynamic_axes={'input': {
-      #     0: 'batch'
-      # }}
-  )
+  torch.onnx.export(model,
+                    args,
+                    fp,
+                    export_params=True,
+                    opset_version=opset_version,
+                    do_constant_folding=False,
+                    input_names=['input'],
+                    output_names=['output'],
+                    **kwds)
   # rename(fp, join(ONNX_DIR, name))
 
 
-onnx_export('img', IMG, image)
+# 参考 https://github.com/OFA-Sys/Chinese-CLIP/blob/master/cn_clip/deploy/pytorch_to_onnx.py
+
+onnx_export('img', IMG, image, dynamic_axes={'input': {0: 'batch'}})
 
 onnx_export('txt', TXT, ['a photo of cat', 'a image of cat'])
