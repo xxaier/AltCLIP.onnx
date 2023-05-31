@@ -9,4 +9,4 @@ MODEL_FP = join(MODEL_DIR, MODEL_NAME)
 ONNX_DIR = join(dirname(ROOT), 'onnx')
 ONNX_FP = join(ONNX_DIR, MODEL_NAME)
 
-opset_version = 18
+opset_version = 17
