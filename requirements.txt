@@ -1,5 +1,5 @@
 Pillow
+torch
 #bmtrain
 #baai_modelhub
-torch
 #flagai
