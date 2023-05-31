@@ -3,6 +3,7 @@
 import onnxruntime
 from os.path import join, dirname, abspath
 from export.config import MODEL_NAME
+import numpy as np
 
 ROOT = dirname(abspath(__file__))
 session = onnxruntime.SessionOptions()
@@ -12,9 +13,17 @@ option.log_severity_level = 2
 kind = 'txt'
 fp = join(ROOT, f'onnx/{MODEL_NAME}/{kind}.onnx')
 
-img_session = onnxruntime.InferenceSession(
+sess = onnxruntime.InferenceSession(
     fp,
     sess_options=session,
     providers=['CoreMLExecutionProvider', 'CPUExecutionProvider'])
 
-print(fp)
+input_name = sess.get_inputs()
+output_name = sess.get_outputs()[0].name
+
+print(input_name)
+print(output_name)
+output = sess.run([output_name], ["a photo of dog", 'a photo of cat'])
+prob = np.squeeze(output[0])
+
+print(">", prob)
