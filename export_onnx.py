@@ -16,21 +16,22 @@ image = torch.tensor(image["pixel_values"]).to(DEVICE)
 
 
 def onnx_export(outdir, model, args):
-  onnx_txt = join(ONNX_FP, outdir)
-  makedirs(onnx_txt, exist_ok=True)
+  makedirs(ONNX_FP, exist_ok=True)
   name = f'{MODEL_NAME}.{outdir}.onnx'
-  fp = join(onnx_txt, name)
-  torch.onnx.export(model,
-                    args,
-                    fp,
-                    export_params=True,
-                    opset_version=opset_version,
-                    do_constant_folding=False,
-                    input_names=['input'],
-                    output_names=['output'],
-                    dynamic_axes={'input': {
-                        0: 'batch'
-                    }})
+  fp = join(outdir, name)
+  torch.onnx.export(
+      model,
+      args,
+      fp,
+      export_params=True,
+      opset_version=opset_version,
+      do_constant_folding=False,
+      input_names=['input'],
+      output_names=['output'],
+      # dynamic_axes={'input': {
+      #     0: 'batch'
+      # }}
+  )
   # rename(fp, join(ONNX_DIR, name))
 
 
