@@ -28,6 +28,7 @@ def onnx_export(outdir, model, args, **kwds):
                     input_names=['input'],
                     output_names=['output'],
                     **kwds)
+  print(name, "DONE\n")
   # rename(fp, join(ONNX_DIR, name))
 
 
