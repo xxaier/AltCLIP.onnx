@@ -6,10 +6,11 @@ import onnx
 
 
 def check(name):
-  fp = join(ONNX_FP, f'{name}/{MODEL_NAME}.{name}.onnx')
+  fp = join(ONNX_FP, f'{MODEL_NAME}.{name}.onnx')
   print(fp, onnx.checker.check_model(fp))
   # onnx_model = onnx.load(fp)
   # return onnx_model
 
 
 check('img')
+check('txt')
