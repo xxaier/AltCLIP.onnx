@@ -29,7 +29,7 @@ transform = loader.get_transform()
 
 model.eval()
 model.to(device)
-#model = torch.compile(model)
+model = torch.compile(model)
 tokenizer = loader.get_tokenizer()
 
 COST = None

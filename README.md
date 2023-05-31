@@ -22,9 +22,12 @@
   woman 100.00%
   女人 100.00%
 
-##
+## 测试环境
 
-Apple M2 Max 38 核心 GPU (简称 M2)
+* torch 2.0.1
+* Python 3.11.3
+* MacOS 13.3.1
+* Apple M2 Max 38 核心 GPU (简称 M2)
 
 M2 MPS 806ms
 M2 CPU 5250ms
