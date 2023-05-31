@@ -33,7 +33,7 @@ class TxtModel(nn.Module):
     super(TxtModel, self).__init__()
     self.model = MODEL
 
-  def forward(self, li, image):
+  def forward(self, li):
     tokenizer_out = tokenizer(li,
                               padding=True,
                               truncation=True,
