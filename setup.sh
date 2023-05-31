@@ -4,9 +4,14 @@ DIR=$(realpath $0) && DIR=${DIR%/*}
 cd $DIR
 set -ex
 
-if [[ uname == *"Darwin"* ]]; then
+case $(uname -s) in
+Darwin*)
   pkg=onnxruntime-silicon
-else
+  ;;
+*)
   pkg=onnxruntime
-fi
-pip install onnxruntime
+  ;;
+esac
+
+direnv allow
+direnv exec . pip install $pkg
