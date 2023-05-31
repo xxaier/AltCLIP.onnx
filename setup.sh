@@ -10,7 +10,7 @@ direnv exec . pip install --pre torch --index-url https://download.pytorch.org/w
 
 direnv exec . pip install -r requirements.txt
 
-if [[ $(uname) != *"Darwin"* ]]; then
+if [[ $(uname) == *"Darwin"* ]]; then
   direnv exec . pip install -i https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/ORT-Nightly/pypi/simple/ ort-nightly==1.16.0.dev20230530005
 else
   pip install onnxruntime
