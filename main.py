@@ -6,12 +6,12 @@ from config import MODEL, ROOT
 from os.path import join
 from flagai.auto_model.auto_loader import AutoLoader
 
-# if torch.cuda.is_available():
-#   DEVICE = 'cuda'
-# elif torch.backends.mps.is_available():
-#   DEVICE = 'mps'
-# else:
-DEVICE = 'cpu'
+if torch.cuda.is_available():
+  DEVICE = 'cuda'
+elif torch.backends.mps.is_available():
+  DEVICE = 'mps'
+else:
+  DEVICE = 'cpu'
 
 device = torch.device(DEVICE)
 
