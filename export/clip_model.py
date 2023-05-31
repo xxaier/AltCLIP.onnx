@@ -2,7 +2,8 @@
 
 import torch
 import torch.nn as nn
-from config import MODEL_DIR, MODEL_NAME, DEVICE
+from device import DEVICE
+from config import MODEL_DIR, MODEL_NAME
 from flagai.auto_model.auto_loader import AutoLoader
 from proc import tokenizer
 

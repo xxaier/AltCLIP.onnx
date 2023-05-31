@@ -7,7 +7,8 @@ from os.path import basename, join
 from time import time
 from proc import transform
 from glob import glob
-from clip_model import IMG, TXT, DEVICE
+from device import DEVICE
+from clip_model import IMG, TXT
 
 COST = None
 

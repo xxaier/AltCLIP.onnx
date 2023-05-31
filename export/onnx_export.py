@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
+from device import DEVICE
 from os import makedirs
 from os.path import join
 import torch
-from config import ONNX_FP, MODEL_NAME, ROOT, DEVICE, opset_version
+from config import ONNX_FP, MODEL_NAME, ROOT, opset_version
 from clip_model import IMG, TXT
 from PIL import Image
 from proc import transform
