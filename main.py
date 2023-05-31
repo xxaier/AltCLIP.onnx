@@ -4,7 +4,7 @@ import torch
 from PIL import Image
 from config import MODEL, ROOT
 from os.path import basename, join
-from flagai.auto_model.auto_loader import AutoLoader
+from flagai.auto_MODEL.auto_loader import AutoLoader
 from time import time
 from proc import tokenizer, transform
 from glob import glob
@@ -21,23 +21,19 @@ device = torch.device(DEVICE)
 print(DEVICE, MODEL)
 
 loader = AutoLoader(task_name="txt_img_matching",
-                    model_name="AltCLIP-XLMR-L-m18",
-                    model_dir=MODEL)
+                    MODEL_name="AltCLIP-XLMR-L-m18",
+                    MODEL_dir=MODEL)
 
-model = loader.get_model()
+MODEL = loader.get_MODEL()
 
-model.eval()
-model.to(device)
-model = torch.compile(model)
+MODEL.eval()
+MODEL.to(device)
+MODEL = torch.compile(MODEL)
 
 COST = None
 
 
 def inference(jpg, tmpl, kind_li):
-  image = Image.open(jpg)
-  image = transform(image)
-  image = torch.tensor(image["pixel_values"]).to(device)
-  begin = time()
   tokenizer_out = tokenizer([tmpl % i for i in kind_li],
                             padding=True,
                             truncation=True,
@@ -46,10 +42,14 @@ def inference(jpg, tmpl, kind_li):
 
   text = tokenizer_out["input_ids"].to(device)
   attention_mask = tokenizer_out["attention_mask"].to(device)
+  image = Image.open(jpg)
+  image = transform(image)
+  image = torch.tensor(image["pixel_values"]).to(device)
+  begin = time()
 
   with torch.no_grad():
-    image_features = model.get_image_features(image)
-    text_features = model.get_text_features(text,
+    image_features = MODEL.get_image_features(image)
+    text_features = MODEL.get_text_features(text,
                                             attention_mask=attention_mask)
     text_probs = (image_features @ text_features.T).softmax(dim=-1)
 
