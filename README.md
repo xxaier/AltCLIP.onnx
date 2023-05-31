@@ -24,7 +24,9 @@
 
 ## 测试环境
 
-* torch 2.0.1
+### 苹果笔记本
+
+* torch 2.1.0.dev20230531
 * Python 3.11.3
 * MacOS 13.3.1
 * Apple M2 Max 38 核心 GPU (简称 M2)
