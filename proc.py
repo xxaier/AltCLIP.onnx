@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 
 from flagai.model.mm.AltCLIP import AltCLIPProcess
-from config import M18
+from config import FP_MODEL
 
-proc = AltCLIPProcess.from_pretrained(M18)
+proc = AltCLIPProcess.from_pretrained(FP_MODEL)
 
-print(dir(proc))
-print(proc)
 tokenizer = proc.tokenizer
 transform = proc.feature_extractor

@@ -4,4 +4,5 @@ from os.path import abspath, dirname, join
 
 ROOT = dirname(abspath(__file__))
 DIR_MODEL = join(ROOT, 'model')
-M18 = join(DIR_MODEL, 'AltCLIP-XLMR-L-m18')
+NAME_MODEL = 'AltCLIP-XLMR-L-m18'
+FP_MODEL = join(DIR_MODEL, NAME_MODEL)

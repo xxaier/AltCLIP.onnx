@@ -1,39 +1,5 @@
 #!/usr/bin/env python
 
-import torch.nn as nn
-from clip_model import MODEL, DEVICE
-
-
-class ImgModel(nn.Module):
-
-  def __init__(self):
-    super(ImgModel, self).__init__()
-    self.model = MODEL
-
-  def forward(self, image):
-    return self.model.get_image_features(image)
-
-
-class TxtModel(nn.Module):
-
-  def __init__(self):
-    super(TxtModel, self).__init__()
-    self.model = MODEL
-
-  def forward(self, tmpl, kind_li, image):
-    tokenizer_out = tokenizer([tmpl % i for i in kind_li],
-                              padding=True,
-                              truncation=True,
-                              max_length=77,
-                              return_tensors='pt')
-    text = tokenizer_out["input_ids"].to(DEVICE)
-    attention_mask = tokenizer_out["attention_mask"].to(DEVICE)
-    return self.model.get_text_features(text, attention_mask=attention_mask)
-
-
-IMG = ImgModel()
-TXT = TxtModel()
-
 # torch.onnx.export(
 #     img_model,  # model being run
 #     image,  # model input (or a tuple for multiple inputs)

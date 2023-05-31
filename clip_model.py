@@ -2,8 +2,9 @@
 
 import torch
 import torch.nn as nn
-from config import DIR_MODEL
+from config import DIR_MODEL, FP_MODEL
 from flagai.auto_model.auto_loader import AutoLoader
+from proc import tokenizer
 
 if torch.cuda.is_available():
   device = 'cuda'
@@ -15,7 +16,7 @@ else:
 DEVICE = torch.device(device)
 
 loader = AutoLoader(task_name="txt_img_matching",
-                    model_name="AltCLIP-XLMR-L-m18",
+                    model_name=FP_MODEL,
                     model_dir=DIR_MODEL)
 
 MODEL = loader.get_model()
