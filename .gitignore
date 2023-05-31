@@ -1,7 +1,7 @@
 *.pyc
 __pycache__/
 .DS_Store
-.direnv/python-*
+**/.direnv/python-*
 
 onnx/
 FlagAI/
