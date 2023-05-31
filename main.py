@@ -4,7 +4,7 @@ import torch
 from PIL import Image
 from config import MODEL, ROOT
 from os.path import basename, join
-from flagai.auto_MODEL.auto_loader import AutoLoader
+from flagai.auto_model.auto_loader import AutoLoader
 from time import time
 from proc import tokenizer, transform
 from glob import glob
@@ -21,10 +21,10 @@ device = torch.device(DEVICE)
 print(DEVICE, MODEL)
 
 loader = AutoLoader(task_name="txt_img_matching",
-                    MODEL_name="AltCLIP-XLMR-L-m18",
-                    MODEL_dir=MODEL)
+                    model_name="AltCLIP-XLMR-L-m18",
+                    model_dir=MODEL)
 
-MODEL = loader.get_MODEL()
+MODEL = loader.get_model()
 
 MODEL.eval()
 MODEL.to(device)
