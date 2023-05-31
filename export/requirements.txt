@@ -1,0 +1,13 @@
+onnx
+transformers
+huggingface_hub
+packaging
+tqdm
+requests
+cython
+scikit-learn
+#torch
+#Pillow
+#bmtrain
+#baai_modelhub
+#flagai
