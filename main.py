@@ -1,36 +1,28 @@
 #!/usr/bin/env python
 
 import torch
-from m18 import DEVICE
 from PIL import Image
 from config import ROOT
 from os.path import basename, join
 from time import time
-from proc import tokenizer, transform
+from proc import transform
 from glob import glob
-from m18 import MODEL
+from clip_model import IMG, TXT, DEVICE
 
 COST = None
 
 
 def inference(jpg, tmpl, kind_li):
-  tokenizer_out = tokenizer([tmpl % i for i in kind_li],
-                            padding=True,
-                            truncation=True,
-                            max_length=77,
-                            return_tensors='pt')
-
-  text = tokenizer_out["input_ids"].to(DEVICE)
-  attention_mask = tokenizer_out["attention_mask"].to(DEVICE)
+  # text = tokenizer_out["input_ids"].to(DEVICE)
+  # attention_mask = tokenizer_out["attention_mask"].to(DEVICE)
   image = Image.open(jpg)
   image = transform(image)
   image = torch.tensor(image["pixel_values"]).to(DEVICE)
   begin = time()
 
   with torch.no_grad():
-    image_features = MODEL.get_image_features(image)
-    text_features = MODEL.get_text_features(text,
-                                            attention_mask=attention_mask)
+    image_features = IMG.forward(image)
+    text_features = TXT.forward(tmpl, kind_li)
     text_probs = (image_features @ text_features.T).softmax(dim=-1)
 
   global COST
