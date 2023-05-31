@@ -1,4 +1,3 @@
-onnxruntime
 onnx
 transformers
 huggingface_hub

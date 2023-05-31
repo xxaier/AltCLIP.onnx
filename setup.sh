@@ -12,6 +12,8 @@ direnv exec . pip install -r requirements.txt
 
 if [[ $(uname) != *"Darwin"* ]]; then
   direnv exec . pip install onnxruntime-silicon
+else
+  pip install onnxruntime
 fi
 
 if [ ! -d "FlagAI" ]; then
