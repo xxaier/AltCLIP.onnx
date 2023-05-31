@@ -1,9 +1,6 @@
-requests
-cython
-scipy
-numpy
-Pillow
+scikit-learn
 torch
+#Pillow
 #bmtrain
 #baai_modelhub
 #flagai
