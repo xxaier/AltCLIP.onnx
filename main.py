@@ -30,12 +30,13 @@ model.to(device)
 #model = torch.compile(model)
 tokenizer = loader.get_tokenizer()
 
+KIND = ['cat','rat','dog']
 
 def inference():
   image = Image.open(join(ROOT, "cat.jpg"))
   image = transform(image)
   image = torch.tensor(image["pixel_values"]).to(device)
-  tokenizer_out = tokenizer(["a rat", "a dog", "a cat"],
+  tokenizer_out = tokenizer(["a "+i for i in KIND],
                             padding=True,
                             truncation=True,
                             max_length=77,
@@ -49,7 +50,8 @@ def inference():
                                             attention_mask=attention_mask)
     text_probs = (image_features @ text_features.T).softmax(dim=-1)
 
-  print(text_probs.cpu().numpy()[0].tolist())
+  for kind, p in zip(KIND,text_probs.cpu().numpy()[0].tolist()):
+    print(kind,"%.2f%%"%(p*100))
 
 
 if __name__ == "__main__":
