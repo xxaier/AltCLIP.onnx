@@ -22,7 +22,7 @@ def inference(jpg, tmpl, kind_li):
 
   with torch.no_grad():
     image_features = IMG.forward(image)
-    text_features = TXT.forward(tmpl, kind_li)
+    text_features = TXT.forward(tmpl, kind_li, image)
     text_probs = (image_features @ text_features.T).softmax(dim=-1)
 
   global COST
