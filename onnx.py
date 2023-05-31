@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
+from os.path import join
 import torch
-from config import ONNX_FP, ROOT, opset_version
+from config import ONNX_FP, ROOT, DEVICE, opset_version
 from clip_model import IMG
 from PIL import Image
 from proc import transform
