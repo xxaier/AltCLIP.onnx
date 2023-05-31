@@ -3,7 +3,7 @@
 import torch
 from PIL import Image
 from config import MODEL, ROOT
-from os.path import basename,join
+from os.path import basename, join
 from flagai.auto_model.auto_loader import AutoLoader
 from time import time
 from glob import glob
@@ -15,7 +15,6 @@ elif torch.backends.mps.is_available():
 else:
   DEVICE = 'cpu'
 
-DEVICE = 'cpu'
 device = torch.device(DEVICE)
 
 print(DEVICE, MODEL)
@@ -34,6 +33,7 @@ model.to(device)
 tokenizer = loader.get_tokenizer()
 
 COST = None
+
 
 def inference(jpg, tmpl, kind_li):
   image = Image.open(jpg)
@@ -59,17 +59,17 @@ def inference(jpg, tmpl, kind_li):
     for kind, p in zip(kind_li, text_probs.cpu().numpy()[0].tolist()):
       p = round(p * 10000)
       if p:
-        print(kind, "  %.2f%%" % (p/100))
+        print("  %s %.2f%%" % (kind, p / 100))
   return
 
 
 if __name__ == "__main__":
-  li = glob(join(ROOT,'jpg/*.jpg'))
+  li = glob(join(ROOT, 'jpg/*.jpg'))
   # 预热，py.compile 要第一次运行才编译
-  inference(li[0],'a photo of %s', ['cat', 'rat', 'dog', 'man', 'woman'])
+  inference(li[0], 'a photo of %s', ['cat', 'rat', 'dog', 'man', 'woman'])
   COST = 0
   for i in li:
-    print("\n* "+basename(i))
-    inference(i,'a photo of %s', ['cat', 'rat', 'dog', 'man', 'woman'])
-    inference(i,'一张%s的图片', ['猫', '老鼠', '狗', '男人', '女人'])
+    print("\n* " + basename(i))
+    inference(i, 'a photo of %s', ['cat', 'rat', 'dog', 'man', 'woman'])
+    inference(i, '一张%s的图片', ['猫', '老鼠', '狗', '男人', '女人'])
   print('\ncost %2.fms' % (1000 * COST))
