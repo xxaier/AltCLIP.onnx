@@ -50,5 +50,4 @@ if __name__ == "__main__":
     print("\n* " + basename(i))
     inference(i, (('a photo of %s', ('cat', 'rat', 'dog', 'man', 'woman')),
                   ('一张%s的图片', ('猫', '老鼠', '狗', '男人', '女人'))))
-    break
   print('\ncost %2.fms' % (1000 * COST))
