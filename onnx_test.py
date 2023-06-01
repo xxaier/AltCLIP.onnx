@@ -18,23 +18,24 @@ sess = onnxruntime.InferenceSession(fp,
                                     providers=['CPUExecutionProvider'])
 # 'CoreMLExecutionProvider'
 
-for pos, i in enumerate(sess.get_inputs()):
-  print('input', pos, i.name)
-input_name = sess.get_inputs()[1].name
-output_name = sess.get_outputs()[0].name
-
-print(input_name)
-print(output_name)
+# for pos, i in enumerate(sess.get_inputs()):
+#   print('input', pos, i.name)
+# input_name = sess.get_inputs()[1].name
+# for pos, i in enumerate(sess.get_outputs()):
+#   print('output', pos, i.name)
 
 # attention_mask 在处理多个序列时的作用 https://zhuanlan.zhihu.com/p/414511434
-text, attention_mask = tokenizer(
-    ('a photo of dog', 'a photo of chinese woman'))
 
-print(attention_mask[:])
-# output = sess.run([output_name], dict(input=text,
-#                                       attention_mask=attention_mask))
 
-# print(output)
-# prob = np.squeeze(output[0])
+def txt2vec(li):
+  text, attention_mask = tokenizer(li)
+  text = text.numpy()
+  attention_mask = attention_mask.numpy()
+  output = sess.run(None, {'input': text, 'attention_mask': attention_mask})
+  return output
 
-# print(">", output)
+
+if __name__ == '__main__':
+  r = txt2vec(('a photo of dog', 'a photo for chinese woman'))
+  for i in r:
+    print(i)

@@ -28,7 +28,6 @@ def onnx_export(outdir, model, args, **kwds):
       # verbose=True,
       opset_version=opset_version,
       do_constant_folding=False,
-      input_names=['input'],
       output_names=['output'],
       **kwds)
   print(name, "DONE\n")
@@ -40,9 +39,22 @@ def onnx_export(outdir, model, args, **kwds):
 onnx_export('txt',
             TXT,
             tokenizer(['a photo of cat', 'a image of cat'], ),
-            dynamic_axes={'input': {
-                0: 'batch',
-                1: 'batch'
-            }})
+            input_names=['input', 'attention_mask'],
+            dynamic_axes={
+                'input': {
+                    0: 'batch',
+                    1: 'batch',
+                },
+                'attention_mask': {
+                    0: 'batch',
+                    1: 'batch',
+                }
+            })
 
-onnx_export('img', IMG, image, dynamic_axes={'input': {0: 'batch'}})
+onnx_export('img',
+            IMG,
+            image,
+            input_names=['input'],
+            dynamic_axes={'input': {
+                0: 'batch'
+            }})

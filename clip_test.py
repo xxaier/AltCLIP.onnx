@@ -6,7 +6,7 @@ from os.path import basename, join
 from time import time
 from glob import glob
 from wrap.config import ROOT
-from wrap.proc import transform,tokenizer
+from wrap.proc import transform, tokenizer
 from wrap.device import DEVICE
 from wrap.clip_model import IMG, TXT
 
@@ -24,7 +24,7 @@ def inference(jpg, tmpl_kind_li):
     image_features = IMG.forward(image)
     if COST is not None:
       COST += (time() - begin)
-  
+
   for tmpl, kind_li in tmpl_kind_li:
     begin = time()
     with torch.no_grad():
