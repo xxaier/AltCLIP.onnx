@@ -11,7 +11,7 @@ transform = proc.feature_extractor
 
 
 def tokenizer(li):
-  tokenizer_out = tokenizer(li,
+  tokenizer_out = _tokenizer(li,
                             padding=True,
                             truncation=True,
                             max_length=77,

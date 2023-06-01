@@ -7,7 +7,7 @@ import torch
 from config import ONNX_FP, ROOT, opset_version
 from clip_model import TXT, IMG
 from PIL import Image
-from proc import transform
+from proc import transform, tokenizer
 
 JPG = join(ROOT, 'jpg/cat.jpg')
 
@@ -40,7 +40,8 @@ def onnx_export(outdir, model, args, **kwds):
 onnx_export(
     'txt',
     TXT,
-    ['a photo of cat', 'a image of cat'],
+    tokenizer(['a photo of cat', 'a image of cat'],),
+    dynamic_axes={'input': {0: 'batch', 1: 'batch'}}
 )
 
 onnx_export('img', IMG, image, dynamic_axes={'input': {0: 'batch'}})
