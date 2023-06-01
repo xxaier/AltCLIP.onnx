@@ -2,13 +2,13 @@
 
 import torch
 from PIL import Image
-from config import ROOT
 from os.path import basename, join
 from time import time
-from proc import transform,tokenizer
 from glob import glob
-from device import DEVICE
-from clip_model import IMG, TXT
+from export.config import ROOT
+from export.proc import transform,tokenizer
+from export.device import DEVICE
+from export.clip_model import IMG, TXT
 
 COST = None
 

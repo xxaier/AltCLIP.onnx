@@ -2,8 +2,8 @@
 
 import torch
 import torch.nn as nn
-from device import DEVICE
-from config import MODEL_FP
+from .device import DEVICE
+from .config import MODEL_FP
 from flagai.model.mm.AltCLIP import CLIPHF
 
 MODEL = CLIPHF.from_pretrained(MODEL_FP)
