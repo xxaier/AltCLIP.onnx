@@ -3,15 +3,17 @@
 import torch
 import torch.nn as nn
 from device import DEVICE
-from config import MODEL_DIR, MODEL_NAME
-from flagai.auto_model.auto_loader import AutoLoader
+from config import MODEL_FP
 from proc import tokenizer
+from flagai.model.mm.AltCLIP import CLIPHF
 
-loader = AutoLoader(task_name="txt_img_matching",
-                    model_name=MODEL_NAME,
-                    model_dir=MODEL_DIR)
+MODEL = CLIPHF.from_pretrained(MODEL_FP)
 
-MODEL = loader.get_model()
+# loader = AutoLoader(task_name="txt_img_matching",
+#                     model_name=MODEL_NAME,
+#                     model_dir=MODEL_DIR)
+#
+# MODEL = loader.get_model()
 
 MODEL.eval()
 MODEL.to(DEVICE)

@@ -13,15 +13,19 @@ from clip_model import IMG, TXT
 COST = None
 
 
-def inference(jpg, tmpl, kind_li):
+def inference(jpg, tmpl_kind_li):
   image = Image.open(jpg)
   image = transform(image)
   image = torch.tensor(image["pixel_values"]).to(DEVICE)
   begin = time()
-
+  print('image.size', image.size())
   with torch.no_grad():
     image_features = IMG.forward(image)
-    text_features = TXT.forward([tmpl % i for i in kind_li])
+    li = []
+    for tmpl, kind_li in tmpl_kind_li:
+      for i in kind_li:
+        li.append(tmpl % i)
+    text_features = TXT.forward(li)
     text_probs = (image_features @ text_features.T).softmax(dim=-1)
 
   global COST
@@ -42,11 +46,12 @@ def inference(jpg, tmpl, kind_li):
 if __name__ == "__main__":
   li = glob(join(ROOT, 'jpg/*.jpg'))
   # 预热，py.compile 要第一次运行才编译
-  inference(li[0], 'a photo of %s', ['cat', 'rat', 'dog', 'man', 'woman'])
+  inference(li[0],
+            (('a photo of %s', ('cat', 'rat', 'dog', 'man', 'woman')), ))
   COST = 0
   for i in li:
     print("\n* " + basename(i))
-    inference(i, 'a photo of %s', ['cat', 'rat', 'dog', 'man', 'woman'])
-    inference(i, '一张%s的图片', ['猫', '老鼠', '狗', '男人', '女人'])
+    inference(i, (('a photo of %s', ('cat', 'rat', 'dog', 'man', 'woman')),
+                  ('一张%s的图片', ('猫', '老鼠', '狗', '男人', '女人'))))
     break
   print('\ncost %2.fms' % (1000 * COST))
