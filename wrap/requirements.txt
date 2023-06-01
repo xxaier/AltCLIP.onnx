@@ -1,4 +1,3 @@
-onnx
 transformers
 huggingface_hub
 packaging
