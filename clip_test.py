@@ -6,7 +6,6 @@ from os.path import basename, join
 from time import time
 from glob import glob
 from wrap.proc import transform
-from wrap.device import DEVICE
 from clip_txt import txt2vec
 from clip_img import img2vec
 
@@ -17,7 +16,7 @@ def inference(jpg, tmpl_kind_li):
   global COST
   image = Image.open(jpg)
   image = transform(image)
-  image = torch.tensor(image["pixel_values"]).to(DEVICE)
+  image = torch.tensor(image["pixel_values"])
   print('image.size', image.size())
   begin = time()
   image_features = img2vec(image)

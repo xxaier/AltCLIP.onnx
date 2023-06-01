@@ -27,6 +27,7 @@ class ImgModel(nn.Module):
 
   def forward(self, image):
     with torch.no_grad():
+      image = image.to(DEVICE)
       return self.model.get_image_features(image)
 
 
