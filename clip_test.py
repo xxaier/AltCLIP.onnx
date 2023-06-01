@@ -31,6 +31,7 @@ def inference(img, tmpl_kind_li):
     with torch.no_grad():
       text_probs = (image_features @ text_features.T).softmax(dim=-1)
 
+    print(text_probs)
     for kind, p in zip(kind_li, text_probs.cpu().numpy()[0].tolist()):
       p = round(p * 10000)
       if p:
