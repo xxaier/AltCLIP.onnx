@@ -50,6 +50,17 @@ M2 CPU 5351ms
 
 ## 遇到的问题
 
+### 服务器上安装报错
+
+```
+/root/art/clip_test/.direnv/python-3.11.3/lib/python3.11/site-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and o
+ther standards-based tools.
+  warnings.warn(
+aiohttp/_websocket.c:196:12: fatal error: longintrepr.h: No such file or directory
+  196 |   #include "longintrepr.h"
+      |            ^~~~~~~~~~~~~~~
+```
+
 ### flagai 和 onnx 的 protobuf 版本冲突导致报错
 
 ```
