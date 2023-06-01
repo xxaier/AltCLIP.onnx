@@ -329,7 +329,7 @@ if __name__ == '__main__':
 * 用 onnx optimizer 优化 onnx
 * 把 onnx 转为 [MNN](https://www.mnn.zone) ，评测下性能
 
-## 当前的问题
+## 没搞明白的事情
 
 ### 为什么分类给的结果都是只有 0 和 100%？
 
