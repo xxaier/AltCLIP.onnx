@@ -4,4 +4,4 @@ DIR=$(realpath $0) && DIR=${DIR%/*}
 cd $DIR
 set -ex
 
-direnv exec . ./main.py
+direnv exec . ./test_clip.py
