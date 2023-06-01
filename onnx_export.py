@@ -8,6 +8,8 @@ from wrap.config import ONNX_FP, opset_version, IMG_DIR
 from wrap.proc import transform, tokenizer
 import torch
 
+makedirs(ONNX_FP, exist_ok=True)
+
 JPG = join(IMG_DIR, 'cat.jpg')
 
 image = Image.open(JPG)
@@ -16,7 +18,6 @@ image = torch.tensor(image)
 
 
 def onnx_export(outdir, model, args, **kwds):
-  makedirs(ONNX_FP, exist_ok=True)
   name = f'{outdir}.onnx'
   fp = join(ONNX_FP, name)
   torch.onnx.export(
