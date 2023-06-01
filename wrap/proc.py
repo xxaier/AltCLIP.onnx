@@ -2,7 +2,6 @@
 
 from flagai.model.mm.AltCLIP import AltCLIPProcess
 from .config import MODEL_FP
-from .device import DEVICE
 
 proc = AltCLIPProcess.from_pretrained(MODEL_FP)
 
@@ -16,6 +15,6 @@ def tokenizer(li):
                              truncation=True,
                              max_length=77,
                              return_tensors='pt')
-  text = tokenizer_out["input_ids"].to(DEVICE)
-  attention_mask = tokenizer_out["attention_mask"].to(DEVICE)
+  text = tokenizer_out["input_ids"]
+  attention_mask = tokenizer_out["attention_mask"]
   return text, attention_mask

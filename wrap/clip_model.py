@@ -36,6 +36,8 @@ class TxtModel(nn.Module):
     self.model = MODEL
 
   def forward(self, text, attention_mask):
+    text = text.to(DEVICE)
+    attention_mask = attention_mask.to(DEVICE)
     return self.model.get_text_features(text, attention_mask=attention_mask)
 
 

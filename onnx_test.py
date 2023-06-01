@@ -25,10 +25,16 @@ output_name = sess.get_outputs()[0].name
 
 print(input_name)
 print(output_name)
-output = sess.run([output_name],
-                  {"input": tokenizer(['a photo of dog', 'a photo of cat'])})
 
-print(output)
+# attention_mask 在处理多个序列时的作用 https://zhuanlan.zhihu.com/p/414511434
+text, attention_mask = tokenizer(
+    ('a photo of dog', 'a photo of chinese woman'))
+
+print(attention_mask[:])
+# output = sess.run([output_name], dict(input=text,
+#                                       attention_mask=attention_mask))
+
+# print(output)
 # prob = np.squeeze(output[0])
 
 # print(">", output)
