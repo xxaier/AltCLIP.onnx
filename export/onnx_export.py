@@ -37,11 +37,12 @@ def onnx_export(outdir, model, args, **kwds):
 
 # 参考 https://github.com/OFA-Sys/Chinese-CLIP/blob/master/cn_clip/deploy/pytorch_to_onnx.py
 
-onnx_export(
-    'txt',
-    TXT,
-    tokenizer(['a photo of cat', 'a image of cat'],),
-    dynamic_axes={'input': {0: 'batch', 1: 'batch'}}
-)
+onnx_export('txt',
+            TXT,
+            tokenizer(['a photo of cat', 'a image of cat'], ),
+            dynamic_axes={'input': {
+                0: 'batch',
+                1: 'batch'
+            }})
 
 onnx_export('img', IMG, image, dynamic_axes={'input': {0: 'batch'}})
