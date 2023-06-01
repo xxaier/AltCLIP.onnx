@@ -54,23 +54,40 @@ ChatGPT 开发商 OpenAI 的最大投资者， 微软总裁布拉德·史密斯�
 
 然后才发现用 [AutoLoader](https://github.com/FlagAI-Open/FlagAI/blob/master/examples/AltCLIP-m18/README.md#%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86-inference) 加载模型可以自动下载。
 
-但是 AutoLoader，每次启动都会联网检查，不但慢，而且没法在地铁上改代码。
+但是 AutoLoader，每次启动都会联网检查（会卡上一会儿），而且没法在无网的地铁上写代码（地铁上只要有座位我就会写代码）。
 
-于是，拆分了一下，写 [./down.py](./down.py) 来下载模型。
+于是，我拆分了一下，用 [./down.py](./down.py) 来下载模型。
 
 ```python
 <+ ./down.py >
+```
+
+平时开发就直接读取本地模型，参见 [./wrap/clip_model.py](./wrap/clip_model.py)
+
+```
+from flagai.model.mm.AltCLIP import CLIPHF
+
+MODEL = CLIPHF.from_pretrained(MODEL_FP)
+
+MODEL.eval()
+MODEL.to(DEVICE)
 ```
 
 ## 第二个坑：FlagAI 版本
 
 截止 2023-05-31 日， FlagAI 在 pypi 上发布的版本还不支持 AltCLIP-XLMR-L-m18，需要从代码仓库安装最新版。
 
-## 脱机使用
+[./wrap/setup.sh](./wrap/setup.sh)
+
+我写了一个脚本来搞定这些。
+
+```bash
+<+ ./wrap/setup.sh >
+```
 
 ## 零样本分类测试
 
-对 [./jpg](./jpg) 目录下面五张图跑中文和英文提示词的分类
+对 [./jpg](./jpg) 目录下面五张图分别跑中文和英文提示词的分类
 
 运行输出 :
 
@@ -94,6 +111,8 @@ ChatGPT 开发商 OpenAI 的最大投资者， 微软总裁布拉德·史密斯�
   woman 100.00%
   女人 100.00%
 
+## 脱机使用
+
 ## 测试环境
 
 ### 苹果笔记本
@@ -106,9 +125,11 @@ ChatGPT 开发商 OpenAI 的最大投资者， 微软总裁布拉德·史密斯�
 M2 MPS 691ms
 M2 CPU 3301ms
 
-## 遇到的问题
+## 零碎的问题
 
-### 服务器上安装报错
+### 服务器上 aiohttp 安装报错
+
+研究了下，aiohttp 不支持 python3.11, 不管就了是，不影响使用。
 
 ```
 /root/art/clip_test/.direnv/python-3.11.3/lib/python3.11/site-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and o
