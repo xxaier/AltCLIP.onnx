@@ -133,7 +133,7 @@ M2 CPU 3301ms
 * Ubuntu 22.04.2 LTS
 * 16G 内存 6 核 AuthenticAMD
 
-CPU 推理耗时 13713ms
+CPU 推理耗时 13161ms
 
 CPU 信息如下
 ```
@@ -157,9 +157,55 @@ Vendor ID:               AuthenticAMD
                          ilities
 ```
 
-推理速度提升到 7598ms , 速度提升 7707/13713 - 1 = 56%
+## 转为 ONNX 提速
 
-参考[实操专栏 | 记一次 onnx 加速模型推理尝试](https://zhuanlan.zhihu.com/p/466804404)中，onnx 提速为 0.058/0.033-1 = 75%
+服务器上的性能有点慢，考虑转为 onnx 提速。
+
+ONNX(Open Neural Network Exchange)，开放神经网络交换，用于在各种深度学习训练和推理框架转换的一个中间表示格式。
+
+在实际业务中，可以使用 Pytorch 或者 TensorFlow 训练模型，导出成 ONNX 格式，然后在转换成目标设备上支撑的模型格式，比如 TensorRT Engine、NCNN、MNN 等格式。
+
+ONNX 可以用 onnx runtime 运行，减少部署的依赖。
+
+[./onnx_export.py](./onnx_export.py) 中我实现了把 AltCLIP-XLMR-L-m18 转为 ONNX。
+
+```python
+<+ ./onnx_export.py >
+```
+
+运行 [./onnx_txt.py](onnx_txt.py) 可以输出文本向量
+
+```python
+<+ ./onnx_txt.py >
+```
+
+运行 [./onnx_img.py](onnx_img.py) 可以输出图片向量
+
+```python
+<+ ./onnx_img.py >
+```
+
+如下图所示，onnx 生成的向量和用 pytorch 生成的向量一致。
+
+![](https://pub-b8db533c86124200a9d799bf3ba88099.r2.dev/2023/06/NwoXqac.webp)
+
+服务器上 CPU 推理速度提升到 8296ms , 速度提升 13161/8296 - 1 = 58%
+
+参考 [实操专栏 | 记一次 onnx 加速模型推理尝试](https://zhuanlan.zhihu.com/p/466804404)中，onnx 提速为 0.058/0.033-1 = 75%，效果类似。
+
+### 后续的待做
+
+参考 [onnx simplifier 和 onnx optimizer](https://mp.weixin.qq.com/s/q0Aa2LRpeCPCnIzRJbMmaQ)
+
+* 用 onnx-simplifier 简化 onnx
+* 用 optimizer 优化 onnx
+* 把 onnx 转为 [MNN](https://www.mnn.zone) ，评测下性能
+
+## 当前的问题
+
+### 是否需要归一化向量
+
+## 转为 fp16
 
 ## 零碎的问题
 
