@@ -198,12 +198,26 @@ ONNX 可以用 onnx runtime 运行，减少部署的依赖。
 参考 [onnx simplifier 和 onnx optimizer](https://mp.weixin.qq.com/s/q0Aa2LRpeCPCnIzRJbMmaQ)
 
 * 用 onnx-simplifier 简化 onnx
-* 用 optimizer 优化 onnx
+* 用 onnx optimizer 优化 onnx
 * 把 onnx 转为 [MNN](https://www.mnn.zone) ，评测下性能
 
 ## 当前的问题
 
-### 是否需要归一化向量
+### 为什么分类给的结果都是只有 0 和 100%？
+
+```python
+with torch.no_grad():
+  text_probs = (image_features @ text_features.T).softmax(dim=-1)
+
+for kind, p in zip(kind_li, text_probs.cpu().numpy()[0].tolist()):
+  p = round(p * 10000)
+  if p:
+    print("  %s %.1f%%" % (kind, p / 100))
+```
+
+我测试了一张女人抱着狗的图，给出来的分类还是『狗』100%
+
+### 是否需要归一化向量后再录入向量数据库才能做搜索匹配 ?
 
 我看[Chinese-CLIP 中这么写](https://github.com/OFA-Sys/Chinese-CLIP/blob/master/README.md)
 
@@ -220,8 +234,6 @@ image_features = model.get_image_features(image)
 text_features = model.get_text_features(text,attention_mask=attention_mask)
 ```
 是不是也需要归一化之后才能放到向量数据库（用来做后续的搜索）；还是说，不需要这个操作？
-
-## 转为 fp16
 
 ## 零碎的问题
 
