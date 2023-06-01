@@ -1,4 +1,4 @@
-# AltCLIP-XLMR-L-m18 模型学习 & 踩坑笔记
+# AltCLIP-XLMR-L-m18 模型学习 & 踩坑笔记 (未完版)
 
 ## 序言
 
@@ -6,9 +6,9 @@
 
 最近想做一个分享 stable diffusion 模型和图片的网站，需要实现图片搜索和推荐。
 
-这就需要对图片向量化，并且我还想同时支持多国语言搜索，经过多番研究，感觉 [AltCLIP-XLMR-L-m18](https://model.baai.ac.cn/model-detail/100095) 我的需求。
+这就需要选一种算法对图片和文本向量化，并且我还想能用多国语言搜索，经过多番研究， [AltCLIP-XLMR-L-m18](https://model.baai.ac.cn/model-detail/100095)  挺符合我的需求。
 
-这里先做一些概念科普，虽然很简单，但是向我这样的新人也是研究了许久才搞明白。
+先做一些概念科普，虽然很简单，但是向我这样的新人也是研究了许久才搞明白。
 
 AltCLIP，Alt 是 alternative，也就是『替代物』，翻译成为中文就是 CLIP 的替代品。
 
@@ -20,7 +20,21 @@ AltCLIP，简单理解就是『图文对齐的替代品』。
 
 图文对齐，就是可以对狗的图片生成一个向量，对『一张狗的图片』这句话的文本也生成一个向量，然后这对文本和图片生成的向量应该尽可能的靠近（也就是对齐），向量距离有很多种，可以参见[距离计算方式](https://www.bookstack.cn/read/milvus-1.1-zh/milvus_basics-metric.md)。
 
-## 下载模型
+XLM-R: State-of-the-art cross-lingual understanding through self-supervision , 通过自我监督实现最先进的跨语言理解。
+
+简单的说，就是对多语言进行对齐，比如把『一张狗的图片』和 "a image of dog" 映射到一起。
+
+L 是大模型（我看模型参数有 4556MB）。
+
+m18 中的 m 是 Multilingual，代表多语言，18 是代表 18 种语言。
+
+AltCLIP-XLMR-L-m18 支持英语、中文、日语、泰语、韩语、印地语、乌克兰语、阿拉伯语、土耳其语、越南语、波兰语、荷兰语、葡萄牙语、意大利语、西班牙语、德语、法语和俄语
+
+## 第一个坑：下载模型
+
+我一开始去官网下，发现选下载方式中的 zip 或者 pipeline 都不行。
+
+然后才发现可以
 
 ## 脱机使用
 
