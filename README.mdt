@@ -133,7 +133,7 @@ M2 CPU 3301ms
 * Ubuntu 22.04.2 LTS
 * 16G 内存 6 核 AuthenticAMD
 
-CPU 推理耗时 10713ms
+CPU 推理耗时 13713ms
 
 CPU 信息如下
 ```
@@ -156,6 +156,10 @@ Vendor ID:               AuthenticAMD
                          opt clwb sha_ni xsaveopt xsavec xgetbv1 wbnoinvd arat umip arch_capab
                          ilities
 ```
+
+推理速度提升到 7598ms , 速度提升 7707/13713 - 1 = 56%
+
+参考[实操专栏 | 记一次 onnx 加速模型推理尝试](https://zhuanlan.zhihu.com/p/466804404)中，onnx 提速为 0.058/0.033-1 = 75%
 
 ## 零碎的问题
 
