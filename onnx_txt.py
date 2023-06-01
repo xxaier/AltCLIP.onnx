@@ -3,25 +3,18 @@
 from wrap.proc import tokenizer
 from onnx_load import onnx_load
 
+MODEL = onnx_load('txt')
 
-class TxtVec:
 
-  def __init__(self):
-    self.sess = onnx_load('txt')
-
-  def __call__(self, li):
-    text, attention_mask = tokenizer(li)
-    text = text.numpy()
-    attention_mask = attention_mask.numpy()
-    output = self.sess.run(None, {
-        'input': text,
-        'attention_mask': attention_mask
-    })
-    return output[0]
+def txt2vec(li):
+  text, attention_mask = tokenizer(li)
+  text = text.numpy()
+  attention_mask = attention_mask.numpy()
+  output = MODEL.run(None, {'input': text, 'attention_mask': attention_mask})
+  return output[0]
 
 
 if __name__ == '__main__':
-  txt2vec = TxtVec()
   from test_txt import TEST_TXT
   for li in TEST_TXT:
     r = txt2vec(li)

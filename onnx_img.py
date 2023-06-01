@@ -4,21 +4,16 @@ from wrap.proc import transform
 from PIL import Image
 from onnx_load import onnx_load
 
+MODEL = onnx_load('img')
 
-class ImgVec:
 
-  def __init__(self):
-    self.sess = onnx_load('img')
-
-  def __call__(self, img):
-    output = self.sess.run(None, {'input': transform(img)})
-    return output
+def img2vec(img):
+  return MODEL.run(None, {'input': transform(img)})[0]
 
 
 if __name__ == '__main__':
   from wrap.config import IMG_DIR
   from os.path import join
   img = Image.open(join(IMG_DIR, 'cat.jpg'))
-  img2vec = ImgVec()
   vec = img2vec(img)
   print(vec)
