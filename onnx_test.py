@@ -2,8 +2,8 @@
 
 import onnxruntime
 from os.path import join, dirname, abspath
-from export.config import MODEL_NAME
-from export.proc import tokenizer
+from wrap.config import MODEL_NAME
+from wrap.proc import tokenizer
 
 ROOT = dirname(abspath(__file__))
 session = onnxruntime.SessionOptions()

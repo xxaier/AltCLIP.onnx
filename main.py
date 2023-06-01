@@ -5,10 +5,10 @@ from PIL import Image
 from os.path import basename, join
 from time import time
 from glob import glob
-from export.config import ROOT
-from export.proc import transform,tokenizer
-from export.device import DEVICE
-from export.clip_model import IMG, TXT
+from wrap.config import ROOT
+from wrap.proc import transform,tokenizer
+from wrap.device import DEVICE
+from wrap.clip_model import IMG, TXT
 
 COST = None
 
