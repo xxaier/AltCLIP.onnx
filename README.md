@@ -26,7 +26,7 @@ XLM-R: State-of-the-art cross-lingual understanding through self-supervision , �
 
 简单的说，就是对多语言进行对齐，比如把『一张狗的图片』和 "a image of dog" 映射到一起。
 
-L 是大模型（我看模型参数有 4556MB）。
+L 是大模型（我看模型文件有 4556MB）。
 
 m18 中的 m 是 Multilingual，代表多语言，18 是代表 18 种语言。
 
