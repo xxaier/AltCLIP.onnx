@@ -13,10 +13,10 @@ option.log_severity_level = 2
 kind = 'txt'
 fp = join(ROOT, f'onnx/{MODEL_NAME}/{kind}.onnx')
 
-sess = onnxruntime.InferenceSession(
-    fp,
-    sess_options=session,
-    providers=['CoreMLExecutionProvider', 'CPUExecutionProvider'])
+sess = onnxruntime.InferenceSession(fp,
+                                    sess_options=session,
+                                    providers=['CPUExecutionProvider'])
+# 'CoreMLExecutionProvider'
 
 for pos, i in enumerate(sess.get_inputs()):
   print('input', pos, i.name)
