@@ -1,31 +1,24 @@
 #!/usr/bin/env python
 
-from wrap.proc import tokenizer
+from wrap.proc import transform
+from PIL import Image
 from onnx_load import onnx_load
 
 
-class TxtVec:
+class ImgVec:
 
   def __init__(self):
-    self.sess = onnx_load('txt')
+    self.sess = onnx_load('img')
 
-  def __call__(self, li):
-    text, attention_mask = tokenizer(li)
-    text = text.numpy()
-    attention_mask = attention_mask.numpy()
-    output = self.sess.run(None, {
-        'input': text,
-        'attention_mask': attention_mask
-    })
-    return output[0]
+  def __call__(self, image):
+    output = self.sess.run(None, {'input': transform(image).numpy()})
+    return output
 
 
 if __name__ == '__main__':
-  txt2vec = TxtVec()
-  from test_txt import TEST_TXT
-  for li in TEST_TXT:
-    r = txt2vec(li)
-    for txt, i in zip(li, r):
-      print(txt)
-      print(i)
-      print('\n')
+  from wrap.config import ROOT
+  from os.path import join
+  img = Image.open(join(ROOT, 'cat.jpg'))
+  img2vec = ImgVec()
+  vec = img2vec(img)
+  print(vec)
