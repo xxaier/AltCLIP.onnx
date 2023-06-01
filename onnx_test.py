@@ -34,11 +34,12 @@ class TxtVec:
         'input': text,
         'attention_mask': attention_mask
     })
-    return output
+    return output[0]
 
 
 if __name__ == '__main__':
   txt2vec = TxtVec()
   r = txt2vec(('a photo of dog', 'a photo for chinese woman'))
+  print(len(r[0]))
   for i in r:
     print(i)
