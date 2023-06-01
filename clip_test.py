@@ -20,11 +20,12 @@ def inference(img, tmpl_kind_li):
 
   for tmpl, kind_li in tmpl_kind_li:
     begin = time()
+    li = []
+    for i in kind_li:
+      li.append(tmpl % i)
+    text_features = txt2vec(li)
+
     with torch.no_grad():
-      li = []
-      for i in kind_li:
-        li.append(tmpl % i)
-      text_features = txt2vec(li)
       text_probs = (image_features @ text_features.T).softmax(dim=-1)
 
     if COST is not None:
