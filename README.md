@@ -114,11 +114,9 @@ git pull
 direnv exec . python setup.py install
 ```
 
-## 脱机使用
-
 ## 零样本分类测试
 
-对 [./jpg](./jpg) 目录下面五张图跑中文和英文提示词的分类
+对 [./jpg](./jpg) 目录下面五张图分别跑中文和英文提示词的分类
 
 运行输出 :
 
@@ -142,21 +140,222 @@ direnv exec . python setup.py install
   woman 100.00%
   女人 100.00%
 
-## 测试环境
+## 性能测试
 
-### 苹果笔记本
+穷人，没有线上 GPU 服务器，跑了一下苹果笔记本和服务器 CPU 的推理耗时。
+
+基于零样本分类测试，跑了一下耗时，包含了 5 张图片的向量生成和每张图片中英各 5 个问题（合计 50 个问题）的文本向量生成。
 
 * torch 2.1.0.dev20230531
 * Python 3.11.3
+
+### 苹果笔记本
+
 * MacOS 13.3.1
 * Apple M2 Max 38 核心 GPU (简称 M2)
 
 M2 MPS 691ms
 M2 CPU 3301ms
 
-## 遇到的问题
+### [contabo.com](https://contabo.com) 服务器 （每月 10.49 欧元，大概 80 人民币）
 
-### 服务器上安装报错
+* Ubuntu 22.04.2 LTS
+* 16G 内存 6 核 AuthenticAMD
+
+CPU 推理耗时 13161ms
+
+CPU 信息如下
+```
+Vendor ID:               AuthenticAMD
+  Model name:            AMD EPYC 7282 16-Core Processor
+    CPU family:          23
+    Model:               49
+    Thread(s) per core:  1
+    Core(s) per socket:  6
+    Socket(s):           1
+    Stepping:            0
+    BogoMIPS:            5599.99
+    Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse
+                         36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rd
+                         tscp lm rep_good nopl cpuid extd_apicid tsc_known_freq pni pclmulqdq
+                         ssse3 fma cx16 sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer a
+                         es xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm
+                          sse4a misalignsse 3dnowprefetch osvw perfctr_core ssbd ibpb stibp vm
+                         mcall fsgsbase tsc_adjust bmi1 avx2 smep bmi2 rdseed adx smap clflush
+                         opt clwb sha_ni xsaveopt xsavec xgetbv1 wbnoinvd arat umip arch_capab
+                         ilities
+```
+
+## 转为 ONNX 提速
+
+服务器上的性能有点慢，考虑转为 onnx 提速。
+
+ONNX(Open Neural Network Exchange)，开放神经网络交换，用于在各种深度学习训练和推理框架转换的一个中间表示格式。
+
+在实际业务中，可以使用 Pytorch 或者 TensorFlow 训练模型，导出成 ONNX 格式，然后在转换成目标设备上支撑的模型格式，比如 TensorRT Engine、NCNN、MNN 等格式。
+
+ONNX 可以用 onnx runtime 运行，减少部署的依赖。
+
+[./onnx_export.py](./onnx_export.py) 中我实现了把 AltCLIP-XLMR-L-m18 转为 ONNX。
+
+```python
+#!/usr/bin/env python
+
+from PIL import Image
+from os import makedirs
+from os.path import join
+from wrap.clip_model import TXT, IMG
+from wrap.config import ONNX_FP, opset_version, IMG_DIR
+from wrap.proc import transform, tokenizer
+import torch
+
+JPG = join(IMG_DIR, 'cat.jpg')
+
+image = Image.open(JPG)
+image = transform(image)
+image = torch.tensor(image)
+
+
+def onnx_export(outdir, model, args, **kwds):
+  makedirs(ONNX_FP, exist_ok=True)
+  name = f'{outdir}.onnx'
+  fp = join(ONNX_FP, name)
+  torch.onnx.export(
+      model,
+      args,
+      fp,
+      export_params=True,
+      # verbose=True,
+      opset_version=opset_version,
+      do_constant_folding=False,
+      output_names=['output'],
+      **kwds)
+  print(name, "DONE\n")
+  # rename(fp, join(ONNX_DIR, name))
+
+
+# 参考 https://github.com/OFA-Sys/Chinese-CLIP/blob/master/cn_clip/deploy/pytorch_to_onnx.py
+
+onnx_export('txt',
+            TXT,
+            tokenizer(['a photo of cat', 'a image of cat'], ),
+            input_names=['input', 'attention_mask'],
+            dynamic_axes={
+                'input': {
+                    0: 'batch',
+                    1: 'batch',
+                },
+                'attention_mask': {
+                    0: 'batch',
+                    1: 'batch',
+                }
+            })
+
+onnx_export('img',
+            IMG,
+            image,
+            input_names=['input'],
+            dynamic_axes={'input': {
+                0: 'batch'
+            }})
+```
+
+运行 [./onnx_txt.py](onnx_txt.py) 可以输出文本向量
+
+```python
+#!/usr/bin/env python
+
+from wrap.proc import tokenizer
+from onnx_load import onnx_load
+
+MODEL = onnx_load('txt')
+
+
+def txt2vec(li):
+  text, attention_mask = tokenizer(li)
+  text = text.numpy()
+  attention_mask = attention_mask.numpy()
+  output = MODEL.run(None, {'input': text, 'attention_mask': attention_mask})
+  return output[0]
+
+
+if __name__ == '__main__':
+  from test_txt import TEST_TXT
+  for li in TEST_TXT:
+    r = txt2vec(li)
+    for txt, i in zip(li, r):
+      print(txt)
+      print(i)
+      print('\n')
+```
+
+运行 [./onnx_img.py](onnx_img.py) 可以输出图片向量
+
+```python
+#!/usr/bin/env python
+
+from wrap.proc import transform
+from PIL import Image
+from onnx_load import onnx_load
+
+MODEL = onnx_load('img')
+
+
+def img2vec(img):
+  return MODEL.run(None, {'input': transform(img)})[0]
+
+
+if __name__ == '__main__':
+  from wrap.config import IMG_DIR
+  from os.path import join
+  img = Image.open(join(IMG_DIR, 'cat.jpg'))
+  vec = img2vec(img)
+  print(vec)
+```
+
+如下图所示，onnx 生成的向量和用 pytorch 生成的向量一致。
+
+![](https://pub-b8db533c86124200a9d799bf3ba88099.r2.dev/2023/06/NwoXqac.webp)
+
+服务器上 CPU 推理速度提升到 8296ms , 速度提升 13161/8296 - 1 = 58%
+
+参考 [实操专栏 | 记一次 onnx 加速模型推理尝试](https://zhuanlan.zhihu.com/p/466804404)中，onnx 提速为 0.058/0.033-1 = 75%，效果类似。
+
+### 后续的待做
+
+参考 [onnx simplifier 和 onnx optimizer](https://mp.weixin.qq.com/s/q0Aa2LRpeCPCnIzRJbMmaQ)
+
+* 用 onnx-simplifier 简化 onnx
+* 用 optimizer 优化 onnx
+* 把 onnx 转为 [MNN](https://www.mnn.zone) ，评测下性能
+
+## 当前的问题
+
+### 是否需要归一化向量
+
+我看[Chinese-CLIP 中这么写](https://github.com/OFA-Sys/Chinese-CLIP/blob/master/README.md)
+
+```
+# 对特征进行归一化，请使用归一化后的图文特征用于下游任务
+image_features /= image_features.norm(dim=-1, keepdim=True)
+text_features /= text_features.norm(dim=-1, keepdim=True)
+```
+
+那么 AltCLIP-XLMR-L-m18 中得到图片和文本的向量
+
+```
+image_features = model.get_image_features(image)
+text_features = model.get_text_features(text,attention_mask=attention_mask)
+```
+是不是也需要归一化之后才能放到向量数据库（用来做后续的搜索）；还是说，不需要这个操作？
+
+## 转为 fp16
+
+## 零碎的问题
+
+### 服务器上 aiohttp 安装报错
+
+研究了下，aiohttp 不支持 python3.11, 不管就了是，不影响使用。
 
 ```
 /root/art/clip_test/.direnv/python-3.11.3/lib/python3.11/site-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and o
