@@ -18,7 +18,7 @@ class ImgVec:
 if __name__ == '__main__':
   from wrap.config import ROOT
   from os.path import join
-  img = Image.open(join(ROOT, 'cat.jpg'))
+  img = Image.open(join(ROOT, 'img/cat.jpg'))
   img2vec = ImgVec()
   vec = img2vec(img)
   print(vec)

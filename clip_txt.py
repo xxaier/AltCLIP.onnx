@@ -9,8 +9,7 @@ from wrap.clip_model import TXT
 
 
 def txt2vec(li):
-  with torch.no_grad():
-    return TXT.forward(*tokenizer(li))
+  return TXT.forward(*tokenizer(li))
 
 
 if __name__ == "__main__":

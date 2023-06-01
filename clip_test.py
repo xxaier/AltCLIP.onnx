@@ -5,10 +5,10 @@ from PIL import Image
 from os.path import basename, join
 from time import time
 from glob import glob
-from wrap.config import ROOT
-from wrap.proc import transform, tokenizer
+from wrap.proc import transform
 from wrap.device import DEVICE
-from wrap.clip_model import IMG, TXT
+from wrap.clip_model import IMG
+from clip_txt import txt2vec
 
 COST = None
 
@@ -31,7 +31,7 @@ def inference(jpg, tmpl_kind_li):
       li = []
       for i in kind_li:
         li.append(tmpl % i)
-      text_features = TXT.forward(*tokenizer(li))
+      text_features = txt2vec(li)
       text_probs = (image_features @ text_features.T).softmax(dim=-1)
 
     if COST is not None:
@@ -45,7 +45,8 @@ def inference(jpg, tmpl_kind_li):
 
 
 if __name__ == "__main__":
-  li = glob(join(ROOT, 'jpg/*.jpg'))
+  from wrap.config import IMG_DIR
+  li = glob(join(IMG_DIR, '*.jpg'))
   # 预热，py.compile 要第一次运行才编译
   inference(li[0],
             (('a photo of %s', ('cat', 'rat', 'dog', 'man', 'woman')), ))

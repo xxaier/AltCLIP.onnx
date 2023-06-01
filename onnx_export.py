@@ -4,12 +4,12 @@ from PIL import Image
 from os import makedirs
 from os.path import join
 from wrap.clip_model import TXT, IMG
-from wrap.config import ONNX_FP, ROOT, opset_version
+from wrap.config import ONNX_FP, opset_version, IMG_DIR
 from wrap.device import DEVICE
 from wrap.proc import transform, tokenizer
 import torch
 
-JPG = join(ROOT, 'jpg/cat.jpg')
+JPG = join(IMG_DIR, 'cat.jpg')
 
 image = Image.open(JPG)
 image = transform(image)

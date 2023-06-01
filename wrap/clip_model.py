@@ -26,7 +26,8 @@ class ImgModel(nn.Module):
     self.model = MODEL
 
   def forward(self, image):
-    return self.model.get_image_features(image)
+    with torch.no_grad():
+      return self.model.get_image_features(image)
 
 
 class TxtModel(nn.Module):
@@ -36,9 +37,10 @@ class TxtModel(nn.Module):
     self.model = MODEL
 
   def forward(self, text, attention_mask):
-    text = text.to(DEVICE)
-    attention_mask = attention_mask.to(DEVICE)
-    return self.model.get_text_features(text, attention_mask=attention_mask)
+    with torch.no_grad():
+      text = text.to(DEVICE)
+      attention_mask = attention_mask.to(DEVICE)
+      return self.model.get_text_features(text, attention_mask=attention_mask)
 
 
 IMG = ImgModel()
