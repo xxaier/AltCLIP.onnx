@@ -1,6 +1,8 @@
 {
   "type": "module",
   "dependencies": {
-    "@w5/mdt": "^0.0.16"
+    "@w5/coffee_plus": "^0.0.13",
+    "@w5/mdt": "^0.0.16",
+    "@w5/uridir": "^0.0.1"
   }
 }

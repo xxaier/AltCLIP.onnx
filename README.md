@@ -1,3 +1,5 @@
+[‼️]: ✏️README.mdt
+
 # AltCLIP-XLMR-L-m18 模型学习 & 踩坑笔记 (未完版)
 
 ## 序言
@@ -34,7 +36,20 @@ AltCLIP-XLMR-L-m18 支持英语、中文、日语、泰语、韩语、印地语�
 
 我一开始去官网下，发现选下载方式中的 zip 或者 pipeline 都不行。
 
-然后才发现可以
+然后才发现用 AutoLoader 加载模型可以自动下载。
+
+```
+#!/usr/bin/env python
+
+from wrap.config import MODEL_NAME, MODEL_DIR
+from flagai.auto_model.auto_loader import AutoLoader
+
+loader = AutoLoader(task_name="txt_img_matching",
+                    model_name=MODEL_NAME,
+                    model_dir=MODEL_DIR)
+
+loader.get_model()
+```
 
 ## 脱机使用
 
