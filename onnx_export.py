@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
-from device import DEVICE
+from PIL import Image
 from os import makedirs
 from os.path import join
+from wrap.clip_model import TXT, IMG
+from wrap.config import ONNX_FP, ROOT, opset_version
+from wrap.device import DEVICE
+from wrap.proc import transform, tokenizer
 import torch
-from config import ONNX_FP, ROOT, opset_version
-from clip_model import TXT, IMG
-from PIL import Image
-from proc import transform, tokenizer
 
 JPG = join(ROOT, 'jpg/cat.jpg')
 

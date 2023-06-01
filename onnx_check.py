@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from config import ONNX_FP, MODEL_NAME
+from wrap.config import ONNX_FP, MODEL_NAME
 from os.path import join
 import onnx
 
