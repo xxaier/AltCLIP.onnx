@@ -38,7 +38,9 @@ AltCLIP-XLMR-L-m18 支持英语、中文、日语、泰语、韩语、印地语�
 
 然后才发现用 AutoLoader 加载模型可以自动下载。
 
-```
+[./down.py](./down.py)
+
+```python
 #!/usr/bin/env python
 
 from wrap.config import MODEL_NAME, MODEL_DIR
