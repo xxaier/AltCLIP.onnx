@@ -1,9 +1,18 @@
 #!/usr/bin/env python
 
-from flagai.model.mm.AltCLIP import AltCLIPProcess
-from .config import MODEL_FP
+from .config import PROCESS_DIR
+from transformers import CLIPProcessor
 
-proc = AltCLIPProcess.from_pretrained(MODEL_FP)
+
+class AltCLIPProcess(CLIPProcessor):
+  tokenizer_class = ("XLMRobertaTokenizer", "XLMRobertaTokenizerFast")
+
+  # tokenizer_class = ("BertTokenizer", "BertTokenizerFast")
+  def __init__(self, feature_extractor, tokenizer):
+    super().__init__(feature_extractor, tokenizer)
+
+
+proc = AltCLIPProcess.from_pretrained(PROCESS_DIR)
 
 _tokenizer = proc.tokenizer
 _transform = proc.feature_extractor
