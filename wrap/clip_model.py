@@ -10,7 +10,6 @@ MODEL = CLIPHF.from_pretrained(MODEL_FP)
 
 MODEL.eval()
 MODEL.to(DEVICE)
-MODEL = torch.compile(MODEL)
 
 
 class ImgModel(nn.Module):
