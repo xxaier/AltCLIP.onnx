@@ -6,7 +6,12 @@ from .config import MODEL_FP
 proc = AltCLIPProcess.from_pretrained(MODEL_FP)
 
 _tokenizer = proc.tokenizer
-transform = proc.feature_extractor
+_transform = proc.feature_extractor
+
+
+def transform(img):
+  img = _transform(img)
+  return img['pixel_values']
 
 
 def tokenizer(li):

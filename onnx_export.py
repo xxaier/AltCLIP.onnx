@@ -5,7 +5,6 @@ from os import makedirs
 from os.path import join
 from wrap.clip_model import TXT, IMG
 from wrap.config import ONNX_FP, opset_version, IMG_DIR
-from wrap.device import DEVICE
 from wrap.proc import transform, tokenizer
 import torch
 
@@ -13,7 +12,7 @@ JPG = join(IMG_DIR, 'cat.jpg')
 
 image = Image.open(JPG)
 image = transform(image)
-image = torch.tensor(image["pixel_values"]).to(DEVICE)
+image = torch.tensor(image)
 
 
 def onnx_export(outdir, model, args, **kwds):
