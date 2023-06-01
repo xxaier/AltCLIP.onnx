@@ -6,7 +6,8 @@ set -ex
 
 case $(uname -s) in
 Darwin*)
-  pkg=onnxruntime-silicon
+  pkg=onnxruntime
+  #pkg=onnxruntime-silicon
   ;;
 *)
   pkg=onnxruntime
