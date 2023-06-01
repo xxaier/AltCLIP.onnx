@@ -4,7 +4,6 @@ import torch
 import torch.nn as nn
 from device import DEVICE
 from config import MODEL_FP
-from proc import tokenizer
 from flagai.model.mm.AltCLIP import CLIPHF
 
 MODEL = CLIPHF.from_pretrained(MODEL_FP)
@@ -36,14 +35,7 @@ class TxtModel(nn.Module):
     super(TxtModel, self).__init__()
     self.model = MODEL
 
-  def forward(self, li):
-    tokenizer_out = tokenizer(li,
-                              padding=True,
-                              truncation=True,
-                              max_length=77,
-                              return_tensors='pt')
-    text = tokenizer_out["input_ids"].to(DEVICE)
-    attention_mask = tokenizer_out["attention_mask"].to(DEVICE)
+  def forward(self, text, attention_mask):
     return self.model.get_text_features(text, attention_mask=attention_mask)
 
 
