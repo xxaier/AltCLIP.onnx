@@ -11,9 +11,9 @@ from clip_img import img2vec
 COST = None
 
 
-def inference(jpg, tmpl_kind_li):
+def inference(img, tmpl_kind_li):
   global COST
-  image = Image.open(jpg)
+  image = Image.open(img)
   begin = time()
   image_features = img2vec(image)
   if COST is not None:
