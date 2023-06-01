@@ -7,8 +7,8 @@ from time import time
 from glob import glob
 from wrap.proc import transform
 from wrap.device import DEVICE
-from wrap.clip_model import IMG
 from clip_txt import txt2vec
+from clip_img import img2vec
 
 COST = None
 
@@ -19,11 +19,10 @@ def inference(jpg, tmpl_kind_li):
   image = transform(image)
   image = torch.tensor(image["pixel_values"]).to(DEVICE)
   print('image.size', image.size())
-  with torch.no_grad():
-    begin = time()
-    image_features = IMG.forward(image)
-    if COST is not None:
-      COST += (time() - begin)
+  begin = time()
+  image_features = img2vec(image)
+  if COST is not None:
+    COST += (time() - begin)
 
   for tmpl, kind_li in tmpl_kind_li:
     begin = time()
