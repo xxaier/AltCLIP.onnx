@@ -10,32 +10,35 @@ session = onnxruntime.SessionOptions()
 option = onnxruntime.RunOptions()
 option.log_severity_level = 2
 
-kind = 'txt'
-fp = join(ROOT, f'onnx/{MODEL_NAME}/{kind}.onnx')
 
-sess = onnxruntime.InferenceSession(fp,
-                                    sess_options=session,
-                                    providers=['CPUExecutionProvider'])
-# 'CoreMLExecutionProvider'
+def load(kind):
+  fp = join(ROOT, f'onnx/{MODEL_NAME}/{kind}.onnx')
 
-# for pos, i in enumerate(sess.get_inputs()):
-#   print('input', pos, i.name)
-# input_name = sess.get_inputs()[1].name
-# for pos, i in enumerate(sess.get_outputs()):
-#   print('output', pos, i.name)
-
-# attention_mask 在处理多个序列时的作用 https://zhuanlan.zhihu.com/p/414511434
+  sess = onnxruntime.InferenceSession(
+      fp,
+      sess_options=session,
+      providers=['CoreMLExecutionProvider', 'CPUExecutionProvider'])
+  return sess
 
 
-def txt2vec(li):
-  text, attention_mask = tokenizer(li)
-  text = text.numpy()
-  attention_mask = attention_mask.numpy()
-  output = sess.run(None, {'input': text, 'attention_mask': attention_mask})
-  return output
+class TxtVec:
+
+  def __init__(self):
+    self.sess = load('txt')
+
+  def __call__(self, li):
+    text, attention_mask = tokenizer(li)
+    text = text.numpy()
+    attention_mask = attention_mask.numpy()
+    output = self.sess.run(None, {
+        'input': text,
+        'attention_mask': attention_mask
+    })
+    return output
 
 
 if __name__ == '__main__':
+  txt2vec = TxtVec()
   r = txt2vec(('a photo of dog', 'a photo for chinese woman'))
   for i in r:
     print(i)
