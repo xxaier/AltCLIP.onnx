@@ -19,22 +19,22 @@ def inference(img, tmpl_kind_li):
     COST += (time() - begin)
 
   for tmpl, kind_li in tmpl_kind_li:
-    begin = time()
     li = []
     for i in kind_li:
       li.append(tmpl % i)
+
+    begin = time()
     text_features = txt2vec(li)
+    if COST is not None:
+      COST += (time() - begin)
 
     with torch.no_grad():
       text_probs = (image_features @ text_features.T).softmax(dim=-1)
 
-    if COST is not None:
-      COST += (time() - begin)
-
-      for kind, p in zip(kind_li, text_probs.cpu().numpy()[0].tolist()):
-        p = round(p * 10000)
-        if p:
-          print("  %s %.1f%%" % (kind, p / 100))
+    for kind, p in zip(kind_li, text_probs.cpu().numpy()[0].tolist()):
+      p = round(p * 10000)
+      if p:
+        print("  %s %.1f%%" % (kind, p / 100))
   return
 
 
