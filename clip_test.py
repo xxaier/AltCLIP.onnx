@@ -4,7 +4,6 @@ import torch
 from PIL import Image
 from os.path import basename, join
 from time import time
-from glob import glob
 from clip_txt import txt2vec
 from clip_img import img2vec
 
@@ -40,6 +39,7 @@ def inference(img, tmpl_kind_li):
 
 if __name__ == "__main__":
   from wrap.config import IMG_DIR
+  from glob import glob
   li = glob(join(IMG_DIR, '*.jpg'))
   # 预热，py.compile 要第一次运行才编译
   inference(li[0],

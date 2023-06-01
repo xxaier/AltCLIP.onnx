@@ -16,3 +16,5 @@ esac
 
 direnv allow
 direnv exec . pip install $pkg
+direnv exec . ./wrap/setup.sh
+direnv exec . ./down.py

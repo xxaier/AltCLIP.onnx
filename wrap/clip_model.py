@@ -8,12 +8,6 @@ from flagai.model.mm.AltCLIP import CLIPHF
 
 MODEL = CLIPHF.from_pretrained(MODEL_FP)
 
-# loader = AutoLoader(task_name="txt_img_matching",
-#                     model_name=MODEL_NAME,
-#                     model_dir=MODEL_DIR)
-#
-# MODEL = loader.get_model()
-
 MODEL.eval()
 MODEL.to(DEVICE)
 MODEL = torch.compile(MODEL)
