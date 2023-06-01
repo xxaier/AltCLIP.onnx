@@ -8,6 +8,7 @@ import torch
 def img2vec(img):
   img = transform(img)
   img = torch.tensor(img)
+  print('image.size', image.size())
   return IMG.forward(img)
 
 

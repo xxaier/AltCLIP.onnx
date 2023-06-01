@@ -14,7 +14,6 @@ COST = None
 def inference(jpg, tmpl_kind_li):
   global COST
   image = Image.open(jpg)
-  print('image.size', image.size())
   begin = time()
   image_features = img2vec(image)
   if COST is not None:
