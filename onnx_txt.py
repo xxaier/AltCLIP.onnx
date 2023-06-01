@@ -1,30 +1,13 @@
 #!/usr/bin/env python
 
-import onnxruntime
-from os.path import join, dirname, abspath
-from wrap.config import MODEL_NAME
 from wrap.proc import tokenizer
-
-ROOT = dirname(abspath(__file__))
-session = onnxruntime.SessionOptions()
-option = onnxruntime.RunOptions()
-option.log_severity_level = 2
-
-
-def load(kind):
-  fp = join(ROOT, f'onnx/{MODEL_NAME}/{kind}.onnx')
-
-  sess = onnxruntime.InferenceSession(
-      fp,
-      sess_options=session,
-      providers=['CoreMLExecutionProvider', 'CPUExecutionProvider'])
-  return sess
+from onnx_load import onnx_load
 
 
 class TxtVec:
 
   def __init__(self):
-    self.sess = load('txt')
+    self.sess = onnx_load('txt')
 
   def __call__(self, li):
     text, attention_mask = tokenizer(li)
