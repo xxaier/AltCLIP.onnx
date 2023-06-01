@@ -1,7 +1,9 @@
+bun.lockb
 *.pyc
 __pycache__/
 .DS_Store
 **/.direnv/python-*
+node_modules/
 
 onnx/
 FlagAI/
