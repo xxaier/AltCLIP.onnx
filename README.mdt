@@ -205,6 +205,22 @@ ONNX 可以用 onnx runtime 运行，减少部署的依赖。
 
 ### 是否需要归一化向量
 
+我看[Chinese-CLIP 中这么写](https://github.com/OFA-Sys/Chinese-CLIP/blob/master/README.md)
+
+```
+# 对特征进行归一化，请使用归一化后的图文特征用于下游任务
+image_features /= image_features.norm(dim=-1, keepdim=True)
+text_features /= text_features.norm(dim=-1, keepdim=True)
+```
+
+那么 AltCLIP-XLMR-L-m18 中得到图片和文本的向量
+
+```
+image_features = model.get_image_features(image)
+text_features = model.get_text_features(text,attention_mask=attention_mask)
+```
+是不是也需要归一化之后才能放到向量数据库（用来做后续的搜索）；还是说，不需要这个操作？
+
 ## 转为 fp16
 
 ## 零碎的问题
