@@ -39,7 +39,10 @@ class TxtVec:
 
 if __name__ == '__main__':
   txt2vec = TxtVec()
-  r = txt2vec(('a photo of dog', 'a photo for chinese woman'))
-  print(len(r[0]))
-  for i in r:
-    print(i)
+  from test_txt import TEST_TXT
+  for li in TEST_TXT:
+    r = txt2vec(li)
+    for txt, i in zip(li, r):
+      print(txt)
+      print(i)
+      print('\n')
