@@ -167,6 +167,17 @@ ONNX(Open Neural Network Exchange)，开放神经网络交换，用于在各种�
 
 ONNX 可以用 onnx runtime 运行，减少部署的依赖。
 
+提取后，依赖只有
+
+* onnxruntime
+* transformers
+
+参见 [./wrap/proc.py](./wrap/proc.py)
+
+```python
+<+ ./wrap/proc.py >
+```
+
 [./onnx_export.py](./onnx_export.py) 中我实现了把 AltCLIP-XLMR-L-m18 转为 ONNX。
 
 ```python
